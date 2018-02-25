@@ -33,6 +33,7 @@ class Bookdetails(models.Model):
     subtitle = models.CharField(max_length=453, blank=True)
     authors = models.ManyToManyField(Author) # [TODO] translator
     publisher = models.ForeignKey(Publisher, on_delete=models.PROTECT, default=default_Publisher)
+#    publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
     #published_date = models.DateField(blank=True, null=True)
     published_date = models.CharField(max_length=53, blank=True)
     #identifiers = models.ManyToManyField(BookIdentifier)
@@ -80,7 +81,9 @@ def default_Possessor():
 class Book(models.Model):
     detail = models.ForeignKey(Bookdetails, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.SET_DEFAULT, default=default_Location)
+#    location = models.ForeignKey(Location, on_delete=models.CASCADE)
     possessor = models.ForeignKey(Possessor, on_delete=models.SET_DEFAULT, default=default_Possessor)
+#    possessor = models.ForeignKey(Possessor, on_delete=models.CASCADE)
     notas = models.TextField(max_length=9453, blank=True)
 
     def __str__(self):
