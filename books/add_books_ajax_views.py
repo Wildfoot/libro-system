@@ -59,11 +59,16 @@ def detail_to_store(request):
             check = sql_operation.check()
             check.check_identifiers_valid(book_detail)
             check.check_title_not_empty(book_detail)
+            check.check_duplicate_books(book_detail)
         except utils.IndustryIdentifierError as error_paramenter:
             response_object["status"] = "invalid_identifier"
-            response_object["invalid_identifier"] = error_paramenter.args[1]
+            response_object["invalid_identifier"] = error_paramenter.error_identifier
         except utils.BookdetailValidError as error_paramenter:
-            response_object["status"] = error_paramenter.args[0]
+            response_object["status"] = error_paramenter.message
+        except utils.IndustryIdentifierDuplicate as error_paramenter:
+            response_object["status"] = error_paramenter.message
+            response_object["duplicate_identifier"] = error_paramenter.duplicate_identifier
+            response_object["duplicate_book"] = utils.bookdetail_2_dictionary(error_paramenter.duplicate_book)
         except:
             response_object["status"] = "Unexpected Error"
             raise
