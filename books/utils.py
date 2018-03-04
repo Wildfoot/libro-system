@@ -1,4 +1,5 @@
 from urllib.request import urlopen
+#from django.core.serializers import serialize
 import json
 import datetime
 import re
@@ -15,6 +16,32 @@ class IndustryIdentifierError(Error):
 class BookdetailValidError(Error):
     def __init__(self, message):
         self.message = message
+
+class IndustryIdentifierDuplicate(Error):
+    def __init__(self, message, identifier, book):
+        self.message = message
+        self.duplicate_identifier = identifier
+        self.duplicate_book = book
+
+def bookdetail_2_dictionary(book):
+    ret = {}
+    ret["pk"] = book.pk
+    ret["title"] = book.title
+    ret["subtitle"] = book.subtitle
+    ret["publisher"] = book.publisher.name
+    ret["publisheddate"] = book.published_date
+    ret["description"] = book.description
+    ret["authors"] = []
+    for author in book.authors.all():
+        ret["authors"].append(author.name)
+    ret["identifiers"] = []
+    for identifier in book.bookidentifier_set.all():
+        ret["identifiers"].append({"type": identifier.itype, "identifier": identifier.identifier})
+    #return json.dumps(ret)
+    return ret
+        
+#    ret = serialize("json", Books_QuerySet, use_natural_foreign_keys=True, use_natural_primary_keys=True)
+#    return ret
 
 def check_isbn_issn(string):
     if (re.fullmatch(r'[0-9]{9}[0-9X]', string) or re.fullmatch(r'[0-9]{13}', string) or re.fullmatch(r'[0-9]{7}[0-9X]', string)):

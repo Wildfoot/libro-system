@@ -56,6 +56,9 @@ class search:
 
 class check:
     "check SQL contain"
+    def check_identifier_valid(self, identifier):
+        utils.check_isbn_issn(identifier)
+
     def check_identifiers_valid(self, book_detail):
         for identifier in book_detail["identifiers"]:
             utils.check_isbn_issn(identifier["identifier"])
@@ -64,12 +67,21 @@ class check:
         if book_detail["title"] == "":
             raise BookdetailValidError("title_empty")
 
-    def check_identifier_valid(self, identifier):
-        utils.check_isbn_issn(identifier)
-
     def check_resemble_book(self, book_detail):
         pass
 
-    def check_duplicate_identifier(self, book_detail):
-        pass
+    def check_duplicate_identifier(self, identifier):
+        try:
+            obj = models.BookIdentifier.objects.get(identifier = identifier["identifier"])
+        except models.BookIdentifier.DoesNotExist:
+            return 0
+        else:
+            raise utils.IndustryIdentifierDuplicate("Identifier_duplicate", identifier["identifier"], obj.belongbook)
+#        except:
+#            #Unexpected Error
+#            raise 
 
+    def check_duplicate_books(self, book_detail):
+        for identifier in book_detail["identifiers"]:
+            self.check_duplicate_identifier(identifier)
+        return 0

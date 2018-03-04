@@ -18,12 +18,21 @@ class Author(models.Model):
     def __str__(self):
         return self.name
 
+#class PublisherManager(models.Manager):
+#    def get_by_natural_key(self, name):
+#        return self.get(name = name)
+
 class Publisher(models.Model):
+#    objects = PublisherManager()
+
     name = models.CharField(max_length=453)
 
     def __str__(self):
         return self.name
 
+#    def natural_key(self):
+#        return self.name
+#
 def default_Publisher():
     obj, is_created = Publisher.objects.get_or_create(name = "unknown")
     return obj
