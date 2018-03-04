@@ -20,7 +20,7 @@ def isbn_to_detail(request):
         try:
             check = sql_operation.check()
             check.check_identifier_valid(str(isbn_input))
-        except IndustryIdentifierError as error_paramenter:
+        except utils.IndustryIdentifierError as error_paramenter:
             response_object["status"] = "invalid_identifier"
         else:
             response_object = get_book_detail(isbn_input)
