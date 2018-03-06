@@ -51,8 +51,14 @@ class store:
 class search:
     "search from SQL"
     
-    def search_using_identifier(self):
-        pass
+    def search_using_identifier(self, identifier):
+        try:
+            obj = models.BookIdentifier.objects.get(identifier = identifier)
+        except models.BookIdentifier.DoesNotExist:
+            return 0
+        else:
+            return obj.belongbook
+       
 
 class check:
     "check SQL contain"

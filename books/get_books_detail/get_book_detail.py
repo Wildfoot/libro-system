@@ -35,13 +35,13 @@
 #sys.path.append(APIS_PATH)
 #import Google_Books_API
 #import xISBN_API
-from books.get_books_detail.APIs import Google_Books_API, xISBN_API
+from books.get_books_detail.APIs import Google_Books_API, xISBN_API, Local_DB
 
 def get_book_detail( request_bar ):
     return_object = {}
     return_object["TotalItems"] = 0
     return_object["items"] = []
-    APIs = [Google_Books_API, xISBN_API]
+    APIs = [Local_DB, Google_Books_API, xISBN_API]
     for API in APIs:
         respond_object = API.get_book_detail( request_bar )
         return_object["TotalItems"] = return_object["TotalItems"] + respond_object["TotalItems"]
