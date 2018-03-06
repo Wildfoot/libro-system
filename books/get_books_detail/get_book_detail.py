@@ -23,6 +23,8 @@
 #     }
 #   ],
 #   "description": ""
+#   "pk": (option)
+#   "source": "which API"
 #   }
 # ]
 #}
@@ -46,6 +48,9 @@ def get_book_detail( request_bar ):
         respond_object = API.get_book_detail( request_bar )
         return_object["TotalItems"] = return_object["TotalItems"] + respond_object["TotalItems"]
         for item in respond_object["items"]:
+            item["source"] = API.__name__
+            item["source"] = item["source"].split(".")[-1]
             return_object["items"].append( item )
+
     return return_object
 

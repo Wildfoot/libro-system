@@ -115,6 +115,7 @@ function isbn_to_book_detail_ajax(){
                 display_item.find("#publisher").val(E["publisher"]);
                 display_item.find("#publisheddate").val(E["publisheddate"]);
                 display_item.find("#description").val(E["description"]);
+                display_item.find("#source").html(E["source"]);
                 A_clear_author_item = A_clear_book_detail_block.find(".author-item").clone();
                 for(var j in E["authors"]){
                     if(j == 0){

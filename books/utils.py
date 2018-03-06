@@ -34,9 +34,9 @@ def bookdetail_2_dictionary(book):
     ret["authors"] = []
     for author in book.authors.all():
         ret["authors"].append(author.name)
-    ret["identifiers"] = []
+    ret["industryIdentifiers"] = []
     for identifier in book.bookidentifier_set.all():
-        ret["identifiers"].append({"type": identifier.itype, "identifier": identifier.identifier})
+        ret["industryIdentifiers"].append({"type": identifier.itype, "identifier": identifier.identifier})
     #return json.dumps(ret)
     return ret
         
