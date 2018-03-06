@@ -36,6 +36,7 @@ def detail_to_store(request):
         book_detail["publisher"] = request.POST["detail_publisher"]
         book_detail["publisheddate"] = request.POST["detail_publisheddate"]
         book_detail["description"] = request.POST["detail_description"]
+        book_detail["pk"] = request.POST["detail_pk"]
         book_detail["authors"] = request.POST.getlist("detail_authors[]")
 
         identifiers_not_split = request.POST.getlist("detail_identifiers[]")

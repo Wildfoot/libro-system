@@ -76,6 +76,18 @@ class check:
     def check_resemble_book(self, book_detail):
         pass
 
+# identifer can't check
+#    def check_identifier_equal_model_in_db_using_pk(self, book_detail):
+#        if book_detail["pk"] != "":
+#            try:
+#                obj = models.Bookdetails.objects.get(pk = int(book_detail["pk"]))
+#                for bookidentifier in obj.bookidentifier_set.all():
+#                    bookidentifier.identifier
+#
+#            except models.DoesNotExist:
+#                pass
+
+        
     def check_duplicate_identifier(self, identifier):
         try:
             obj = models.BookIdentifier.objects.get(identifier = identifier["identifier"])
@@ -88,6 +100,11 @@ class check:
 #            raise 
 
     def check_duplicate_books(self, book_detail):
+        #ignore if pk exist
+        if book_detail["pk"] != "":
+#            self.check_identifier_equal_model_in_db_using_pk(book_detail)
+            return 0
+
         for identifier in book_detail["identifiers"]:
             self.check_duplicate_identifier(identifier)
         return 0

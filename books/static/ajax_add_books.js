@@ -47,6 +47,7 @@ function create_post_data(parameter){
             detail_description: $(submit_div).find("#description").val(),
             detail_authors: authors,
             detail_identifiers: identifiers,
+            detail_pk: $(submit_div).find("#pk").text(),
         })
     }
     return response_object;
@@ -116,6 +117,7 @@ function isbn_to_book_detail_ajax(){
                 display_item.find("#publisheddate").val(E["publisheddate"]);
                 display_item.find("#description").val(E["description"]);
                 display_item.find("#source").html(E["source"]);
+                display_item.find("#pk").html(E["pk"]);
                 A_clear_author_item = A_clear_book_detail_block.find(".author-item").clone();
                 for(var j in E["authors"]){
                     if(j == 0){
