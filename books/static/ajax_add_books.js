@@ -52,15 +52,70 @@ function create_post_data(parameter){
     }
     return response_object;
 }
-function display_status_message(message){
-    //var message_div = $( '<div class="status-message" style="top: ' + String($(".status-message").length + 1) + 'px;">' + message + '</div>' );
-    var message_div = $( '<div class="status-message">' + message + '</div>' );
-    $("#status-message-div").append( message_div );
-    var last_status_message = $(".status-message")[$(".status-message").length - 1];
-    setTimeout(function(){
-        last_status_message.remove();
-    }, 5000);
+
+// Arguments :
+//  verb : 'GET'|'POST'
+//  target : an optional opening target (a name, or "_blank"), defaults to "_self"
+//  https://stackoverflow.com/questions/17793183/how-to-replace-window-open-with-a-post
+open_new_window = function(verb, url, data, target) {
+	var form = document.createElement("form");
+	form.action = url;
+	form.method = verb;
+	form.target = target || "_self";
+	if (data) {
+		for (var key in data) {
+			var input = document.createElement("textarea");
+			input.name = key;
+			input.value = typeof data[key] === "object" ? JSON.stringify(data[key]) : data[key];
+			form.appendChild(input);
+		}
+	}
+	form.style.display = 'none';
+	document.body.appendChild(form);
+	form.submit();
+};
+
+//filled up display item and append
+function filled_up_display_item(E, destination){
+    var display_item = A_clear_book_detail_block.clone();
+    display_item.find("#title").val(E["title"]);
+    display_item.find("#subtitle").val(E["subtitle"]);
+    display_item.find("#publisher").val(E["publisher"]);
+    display_item.find("#publisheddate").val(E["publisheddate"]);
+    display_item.find("#description").val(E["description"]);
+    display_item.find("#source").html(E["source"]);
+    display_item.find("#pk").html(E["pk"]);
+    A_clear_author_item = A_clear_book_detail_block.find(".author-item").clone();
+    for(var j in E["authors"]){
+        if(j == 0){
+            display_item.find(".author-item").find(":input").val(E["authors"][j])
+        }
+        else{
+            new_author_item = A_clear_author_item.clone();
+            new_author_item.find(":input").val(E["authors"][j]);
+            new_author_item.appendTo(display_item.find(".authors-container"));
+        }
+    }
+    A_clear_identifier_item = A_clear_book_detail_block.find(".identifier-item").clone();
+    for(var j in E["industryIdentifiers"]){
+        if(j == 0){
+            display_item.find(".identifier-item").find(":input").val(E["industryIdentifiers"][j]["identifier"]);
+        }
+        else{
+            new_identifier_item = A_clear_identifier_item.clone();
+            //failing. so I move select after appendTo
+            new_identifier_item.find(":input").val(E["industryIdentifiers"][j]["identifier"]);
+            new_identifier_item.appendTo(display_item.find(".identifier-container"));
+        }
+    }
+    display_item.appendTo("body");
+    
+    //fill up select
+    for(var j in E["industryIdentifiers"]){
+        $(".book-detail-block:last").find(".identifier-container").find("select").eq(j).val(E["industryIdentifiers"][j]["type"]);
+    }
 }
+
 function submit_book_detail_to_store_ajax(submit_div){
         request_post_data_parameter = {
             substance_information : true,
@@ -78,6 +133,18 @@ function submit_book_detail_to_store_ajax(submit_div){
             },
             success: function( response ){
                 TEST = response;
+                switch(response["status"]){
+                    case "success":
+                        $(".book-detail-block").remove();
+                        $("#isbn-input").focus();
+                        break;
+                    case "Identifier_duplicate":
+                        var new_window = window.open("about:blank", "Book_Duplicate", "width=420,height=230,resizable,scrollbars=yes,status=1");
+                        response["csrfmiddlewaretoken"] = CSRF_TOKEN;
+						open_new_window("POST", "../duplicate-book/", response, "Book_Duplicate");
+                        break;
+                        
+                }
             },
         });
 }
@@ -110,43 +177,7 @@ function isbn_to_book_detail_ajax(){
             for(var i = 0;i < response["TotalItems"];i++ )
             {
                 E = response["items"][i];
-                var display_item = A_clear_book_detail_block.clone();
-                display_item.find("#title").val(E["title"]);
-                display_item.find("#subtitle").val(E["subtitle"]);
-                display_item.find("#publisher").val(E["publisher"]);
-                display_item.find("#publisheddate").val(E["publisheddate"]);
-                display_item.find("#description").val(E["description"]);
-                display_item.find("#source").html(E["source"]);
-                display_item.find("#pk").html(E["pk"]);
-                A_clear_author_item = A_clear_book_detail_block.find(".author-item").clone();
-                for(var j in E["authors"]){
-                    if(j == 0){
-                        display_item.find(".author-item").find(":input").val(E["authors"][j])
-                    }
-                    else{
-                        new_author_item = A_clear_author_item.clone();
-                        new_author_item.find(":input").val(E["authors"][j]);
-                        new_author_item.appendTo(display_item.find(".authors-container"));
-                    }
-                }
-                A_clear_identifier_item = A_clear_book_detail_block.find(".identifier-item").clone();
-                for(var j in E["industryIdentifiers"]){
-                    if(j == 0){
-                        display_item.find(".identifier-item").find(":input").val(E["industryIdentifiers"][j]["identifier"]);
-                    }
-                    else{
-                        new_identifier_item = A_clear_identifier_item.clone();
-                        //failing. so I move select after appendTo
-                        new_identifier_item.find(":input").val(E["industryIdentifiers"][j]["identifier"]);
-                        new_identifier_item.appendTo(display_item.find(".identifier-container"));
-                    }
-                }
-                display_item.appendTo("body");
-                
-                //fill up select
-                for(var j in E["industryIdentifiers"]){
-                    $(".book-detail-block:last").find(".identifier-container").find("select").eq(j).val(E["industryIdentifiers"][j]["type"]);
-                }
+                filled_up_display_item(E, "body")
             }
             if(response["TotalItems"] == 0){
                 var display_item = A_clear_book_detail_block.clone();

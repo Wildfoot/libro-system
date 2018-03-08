@@ -68,8 +68,10 @@ def detail_to_store(request):
             response_object["status"] = error_paramenter.message
         except utils.IndustryIdentifierDuplicate as error_paramenter:
             response_object["status"] = error_paramenter.message
-            response_object["duplicate_identifier"] = error_paramenter.duplicate_identifier
-            response_object["duplicate_book"] = utils.bookdetail_2_dictionary(error_paramenter.duplicate_book)
+#            response_object["duplicate_identifier"] = error_paramenter.duplicate_identifier
+#            response_object["database_book"] = utils.bookdetail_2_dictionary(error_paramenter.duplicate_book)
+            response_object["user_book"] = book_detail
+            response_object["pk"] = error_paramenter.duplicate_book.pk
         except:
             response_object["status"] = "Unexpected Error"
             raise

@@ -1,5 +1,5 @@
 import os
-LOG_FILE_PATH = os.path.dirname(os.path.dirname(__file__))
+LOG_FILE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 import datetime
 
 def append_error_log( error_message ):

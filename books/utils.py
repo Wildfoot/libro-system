@@ -23,10 +23,6 @@ class IndustryIdentifierDuplicate(Error):
         self.duplicate_identifier = identifier
         self.duplicate_book = book
 
-class Identifier(Error):
-    def __init__(self, user_book_details, db_book_details):
-        pass
-
 def bookdetail_2_dictionary(book):
     ret = {}
     ret["pk"] = book.pk
