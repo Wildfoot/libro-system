@@ -139,9 +139,13 @@ function submit_book_detail_to_store_ajax(submit_div){
                         $("#isbn-input").focus();
                         break;
                     case "Identifier_duplicate":
-                        var new_window = window.open("about:blank", "Book_Duplicate", "width=420,height=230,resizable,scrollbars=yes,status=1");
-                        response["csrfmiddlewaretoken"] = CSRF_TOKEN;
-						open_new_window("POST", "../duplicate-book/", response, "Book_Duplicate");
+                        pass_data = {
+                            csrfmiddlewaretoken: CSRF_TOKEN,
+                            pk: response["pk"],
+                            user_book: response["user_book"],
+                        };
+                        var new_window = window.open("about:blank", "Book_Duplicate", "width=700,height=500,resizable,scrollbars=yes,status=1");
+						open_new_window("POST", "../duplicate-book/", pass_data, "Book_Duplicate");
                         break;
                         
                 }

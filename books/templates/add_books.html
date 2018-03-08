@@ -12,12 +12,12 @@
     <script src="/static/main.js"></script>
     <script src="/static/ajax_add_books.js"></script>
     <script>
+        CSRF_TOKEN = '{{ csrf_token }}';
         $.ajaxSetup({
             data: {
-                csrfmiddlewaretoken: '{{ csrf_token }}'
+                csrfmiddlewaretoken: CSRF_TOKEN
             }
         });
-        CSRF_TOKEN = '{{ csrf_token }}';
     </script>
 </head>
 <body>

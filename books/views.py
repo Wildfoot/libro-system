@@ -18,6 +18,8 @@ def add_books(request):
 #@csrf_exempt
 def duplicate_books(request):
     if request.method == "POST":
+        user_book = {}
+        db_book = {}
         return render(request, "duplicate_books.html", locals())
     else:
         return HttpResponse("NO DATA")

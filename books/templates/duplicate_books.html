@@ -19,8 +19,7 @@
     </script>
 </head>
 <body>
-    <div id="status-message-div">
-    </div>
+    <div id="status-message-div"></div>
 
     <h2>Book duplicate!</h2>        
     <div class="book-detail-block">
@@ -32,10 +31,12 @@
         <button id="add-new-authors">+ Add</button> <br>
         <ul class="authors-container">
         <!-- loop -->
+        { % for author in user_book.authors % }
           <li class="author-item">
               <input type="text" name="author" value="">
               <span class="remove-author remove">✗</span>
           </li>
+        { % endfor % }
         <!-- loop end -->
         </ul>
         <label for="publisher">publisher : </label>
