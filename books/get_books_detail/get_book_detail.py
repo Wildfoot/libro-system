@@ -45,7 +45,10 @@ def get_book_detail( request_bar ):
     return_object["items"] = []
     APIs = [Local_DB, Google_Books_API, xISBN_API]
     for API in APIs:
-        respond_object = API.get_book_detail( request_bar )
+        try:
+            respond_object = API.get_book_detail( request_bar )
+        except:
+            pass
         return_object["TotalItems"] = return_object["TotalItems"] + respond_object["TotalItems"]
         for item in respond_object["items"]:
             item["source"] = API.__name__

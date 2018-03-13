@@ -1,1 +1,2 @@
 issue : if foreignkey on_delete!=CASCADE 0001_init will error
+[TODO] get_book_detail try
