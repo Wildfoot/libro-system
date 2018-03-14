@@ -23,25 +23,36 @@ class IndustryIdentifierDuplicate(Error):
         self.duplicate_identifier = identifier
         self.duplicate_book = book
 
-def bookdetail_2_dictionary(book):
+def bookdetail_2_dictionary(book_detail):
     ret = {}
-    ret["pk"] = book.pk
-    ret["title"] = book.title
-    ret["subtitle"] = book.subtitle
-    ret["publisher"] = book.publisher.name
-    ret["publisheddate"] = book.published_date
-    ret["description"] = book.description
+    ret["pk"] = book_detail.pk
+    ret["title"] = book_detail.title
+    ret["subtitle"] = book_detail.subtitle
+    ret["publisher"] = book_detail.publisher.name
+    ret["publisheddate"] = book_detail.published_date
+    ret["description"] = book_detail.description
     ret["authors"] = []
-    for author in book.authors.all():
+    for author in book_detail.authors.all():
         ret["authors"].append(author.name)
     ret["industryIdentifiers"] = []
-    for identifier in book.bookidentifier_set.all():
+    for identifier in book_detail.bookidentifier_set.all():
         ret["industryIdentifiers"].append({"type": identifier.itype, "identifier": identifier.identifier})
     #return json.dumps(ret)
     return ret
-        
-#    ret = serialize("json", Books_QuerySet, use_natural_foreign_keys=True, use_natural_primary_keys=True)
-#    return ret
+
+# no detail
+def book_model_to_dict(book):
+    ret = {}
+    ret["notas"] = book.notas
+    ret["possessor"] = book.possessor.name
+    ret["location"] = book.location.description
+    return ret
+
+def books_model_to_dict(books):
+    ret = []
+    for book in books:
+        ret.append(book_model_to_dict(book))
+    return ret
 
 def check_isbn_issn(string):
     if (re.fullmatch(r'[0-9]{9}[0-9X]', string) or re.fullmatch(r'[0-9]{13}', string) or re.fullmatch(r'[0-9]{7}[0-9X]', string)):
