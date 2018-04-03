@@ -1,11 +1,11 @@
-//create_post_data's parameter
-//parameter = {
-//substance_information : true/false
-//isbn : true/false
-//option : true/false
-//detail : true/false
-//detail_submit_target : (A jquery object)
-//}
+// create_post_data's parameter
+// parameter = {
+// substance_information : true/false
+// isbn : true/false
+// option : true/false
+// detail : true/false
+// detail_submit_target : (A jquery object)
+// }
 var A_clear_book_detail_block //A jquery object
 var TEST = "initial"
 function create_post_data(parameter){
@@ -203,30 +203,6 @@ $(document).ready(function(){
             return false;
         }
     });
-});
-$(document).on("click","#add-new-authors",function(event){
-    event.preventDefault();
-    var new_author_item = $(".author-item:first").clone();
-    new_author_item.find(":input").val("");
-    $(this).parent().find(".authors-container").append(new_author_item);
-});
-$(document).on("click","#add-new-identifier",function(event){
-    event.preventDefault();
-    var new_identifier_item = $(".identifier-item:first").clone();
-    new_identifier_item.find(":input").val("");
-    $(this).parent().find(".identifier-container").append(new_identifier_item);
-});
-$(document).on("click", ".remove-author", function(event){
-    event.preventDefault();
-    if($(this.parentElement.parentElement).find(".author-item").length != 1){
-        $(this).closest($(this)).parent().remove();
-    }
-});
-$(document).on("click", ".remove-identifier", function(event){
-    event.preventDefault();
-    if($(this.parentElement.parentElement).find(".identifier-item").length != 1){
-        $(this).closest($(this)).parent().remove();
-    }
 });
 $(document).on("click", "#submit-book-to-store", function(event){
     event.preventDefault();
