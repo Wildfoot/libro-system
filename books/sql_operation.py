@@ -22,7 +22,19 @@ class store:
         return obj
 
     def store_book_detail(self, book_detail):
-        ret = models.Bookdetails.objects.create(title = book_detail["title"], subtitle = book_detail["subtitle"], publisher = self.store_publisher(book_detail["publisher"]), published_date = book_detail["publisheddate"], description = book_detail["description"])
+        # cover over if pk key exist
+        ret = None
+        if book_detail["pk"] != "":
+            models.Bookdetails.objects.filter(pk = book_detail["pk"]).delete()
+            ret = models.Bookdetails.objects.create(pk = book_detail["pk"])
+        else:
+            ret = models.Bookdetails.objects.create()
+        ret.title = book_detail["title"]
+        ret.subtitle = book_detail["subtitle"]
+        ret.publisher = self.store_publisher(book_detail["publisher"])
+        ret.published_date = book_detail["publisheddate"]
+        ret.description = book_detail["description"]
+
         for author in book_detail["authors"]:
             ret.authors.add(self.store_author(author))
         
