@@ -10,6 +10,7 @@
     <!--<script src="js/bootstrap.js"></script>-->
     <script src="/static/jquery-3.2.0.min.js"></script>
     <script src="/static/main.js"></script>
+    <script src="/static/duplicate_books.js"></script>
     <script src="/static/book_block_interaction.js"></script>
     <script>
         $.ajaxSetup({
@@ -69,7 +70,7 @@
         </ul>
         <label for="description">description : </label> 
         <input type="textarea" name="description" id="description" value="{{ user_book.description }}"> <br>
-        <button id="submit-book-to-store">Submit</button>
+        <button id="submit-book-back">Submit</button>
         <p hidden name="pk" id="pk">{{ pk }}</p>
     </div>
     <div class="book-detail-block">
@@ -112,7 +113,7 @@
         </ul>
         <label for="description">description : </label> 
         <input type="textarea" name="description" id="description" value="{{ db_book.description }}"> <br>
-        <button id="submit-book-to-store">Submit</button>
+        <button id="submit-book-back">Submit</button>
         <p hidden name="pk" id="pk">{{ pk }}</p>
     </div>
 </body>

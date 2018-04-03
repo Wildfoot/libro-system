@@ -25,3 +25,25 @@ $(document).on("click", ".remove-identifier", function(event){
     }
 });
 
+function create_detail_block_post_data(submit_div){
+    authors = [];
+    for( var i = 0; i < submit_div.find(".authors-container").find("input").length; i++){
+        authors.push(submit_div.find(".authors-container").find("input").eq(i).val())
+    }
+    identifiers = [];
+    for( var i = 0; i < submit_div.find(".identifier-container").find("li").length; i++){
+        identifier_temp = submit_div.find(".identifier-container").find("select").eq(i).val() + ":" + submit_div.find(".identifier-container").find("input").eq(i).val();
+        identifiers.push(identifier_temp)
+    }
+    return {
+        detail_title: $(submit_div).find("#title").val(),
+        detail_subtitle: $(submit_div).find("#subtitle").val(),
+        detail_publisher: $(submit_div).find("#publisher").val(),
+        detail_publisheddate: $(submit_div).find("#publisheddate").val(),
+        detail_description: $(submit_div).find("#description").val(),
+        detail_authors: authors,
+        detail_identifiers: identifiers,
+        detail_pk: $(submit_div).find("#pk").text(),
+    }
+}
+
